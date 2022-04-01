@@ -1,0 +1,37 @@
+div.guess {
+    margin-bottom: 20px;
+    display: flex;
+
+    div.block {
+        flex: 50px 0;
+        height: 50px;
+        line-height: 50px;
+        display: inline-block;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        margin: 5px;
+    }
+
+    div.digit {
+        border: 2px solid #555;
+
+        &.digit-WRONG {
+            background-color: #555;
+        }
+        &.digit-CORRECT {
+            background-color: #5b5;
+            border-color: #5b5;
+        }
+        &.digit-OCCURENCE {
+            background-color: #c8b356;
+            border-color: #c8b356;
+        }
+    }
+
+    div.comma {
+        flex: 6px 0;
+        transform: translateY(10px);
+        border: 2px solid transparent;
+    }
+}

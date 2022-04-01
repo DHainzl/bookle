@@ -1,0 +1,28 @@
+<div *ngIf="loading">Loading, please wait ...</div>
+<div *ngIf="!loading">
+    <a [routerLink]="[ '../../' ]">&lt; &lt; back</a>
+    <h2>Guess the price to book!</h2>
+
+    <div *ngFor="let guess of guesses" class="guess">
+        <ng-container *ngFor="let digit of guess.digits; let idx = index">
+            <div *ngIf="idx === offerPriceCent.length - 2" class="block comma">.</div>
+
+            <div class="block digit digit-{{digit.status}}">
+                {{ digit.digit }}
+            </div>
+        </ng-container>
+    </div>
+
+    <div *ngIf="gameStatus === 'SUCCESS'">
+        <div>
+            Congratulations! You guessed the price in <strong>{{ currentGuessIdx }}</strong> tries!
+        </div>
+        
+        <a href="https://ibe-dev.seekda.com/ibe/{{ hotelId }}?skd-checkin={{ startDate }}&skd-checkout={{ endDate }}">Book your offer now!</a>
+    </div>
+    <div *ngIf="gameStatus === 'FAILURE'">
+        <div>
+            Oh no, you failed to guess the correct price! Maybe you want to <a [routerLink]="[ '../../' ]">try one of our cheaper offers</a> with less digits to guess?
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div>
+    Travel Time: <input type="date" [(ngModel)]="startDate" /> - <input type="date" [(ngModel)]="endDate" />
+</div>
+<div>
+    <button (click)="search()">Get Offers</button>
+</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
+<div *ngFor="let result of searchResults">
+    <h2>{{ result.title }}</h2>
+    <div *ngFor="let offer of result.roomOffers">
+        <h3>{{ offer.rate?.title }}</h3>
+        <a [routerLink]="[ offer.room_code, offer.rate?.code ]" [queryParams]="{ startDate, endDate }">Book now!</a>
+    </div>
+</div>
