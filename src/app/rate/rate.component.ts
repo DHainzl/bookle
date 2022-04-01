@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs";
-import { GuessResult, GuessService } from "../guess.service";
+import { GuessResult, GuessResultStatus, GuessService } from "../guess.service";
 import { OffersService } from "../offers.service";
 
 @Component({
@@ -18,6 +19,7 @@ export class RateComponent implements OnInit {
     endDate?: string;
 
     offerPriceCent!: string;
+    extraPoints: number = Math.floor(Math.random() * 400 + 100);
 
     currentGuessIdx = 0;
     guesses: GuessResult[] = [];
@@ -32,6 +34,7 @@ export class RateComponent implements OnInit {
 
         private offersService: OffersService,
         private guessService: GuessService,
+        private snackbar: MatSnackBar,
     ) { }
 
     ngOnInit(): void {
@@ -47,6 +50,31 @@ export class RateComponent implements OnInit {
             this.handleKeyup(ev.key);
             // TODO Unsub?
         });
+    }
+
+    share() {
+        const getStatusEmoji = (status: GuessResultStatus) => {
+            if (status === 'CORRECT') {
+                return '🟩';
+            } else if (status === 'OCCURENCE') {
+                return '🟨';
+            } else if (status === 'WRONG') {
+                return '⬛';
+            }
+            return '';
+        }
+        const result = this.guesses
+            .filter(g => g.digits.every(d => d.status !== 'UNDEFINED'))
+            .map(g => g.digits.map(d => getStatusEmoji(d.status)).join(''))
+            .join('\n');
+
+        const shareText = `I guessed the correct price in ${this.currentGuessIdx} tries and booked my dream vacation!\n\n${result}\n\nDo you think you can do better? Try it here: ${window.location.href}`;
+
+        navigator.clipboard.writeText(shareText).then(() => {
+            this.snackbar.open('Copied to clipboard!', 'Close');
+        }, () => {
+            this.snackbar.open('Error copying', 'Close');
+        })
     }
 
     private getPrice(): void {

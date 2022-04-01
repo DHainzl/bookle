@@ -3,7 +3,7 @@ div.guess {
     display: flex;
 
     div.block {
-        flex: 50px 0;
+        flex: 1 0;
         height: 50px;
         line-height: 50px;
         display: inline-block;
@@ -18,14 +18,17 @@ div.guess {
 
         &.digit-WRONG {
             background-color: #555;
+            color: #fff;
         }
         &.digit-CORRECT {
             background-color: #5b5;
             border-color: #5b5;
+            color: #fff;
         }
         &.digit-OCCURENCE {
             background-color: #c8b356;
             border-color: #c8b356;
+            color: #fff;
         }
     }
 
@@ -34,4 +37,8 @@ div.guess {
         transform: translateY(10px);
         border: 2px solid transparent;
     }
+}
+
+.result-card {
+    margin-top: 20px;
 }

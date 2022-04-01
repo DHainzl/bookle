@@ -1,28 +1,46 @@
-<div *ngIf="loading">Loading, please wait ...</div>
-<div *ngIf="!loading">
-    <a [routerLink]="[ '../../' ]">&lt; &lt; back</a>
-    <h2>Guess the price to book!</h2>
+<div class="container">
+    <div *ngIf="loading">Loading, please wait ...</div>
+    <div *ngIf="!loading">
+        <mat-card>
+            <mat-card-title>
+                Guess the price to book!
+            </mat-card-title>
 
-    <div *ngFor="let guess of guesses" class="guess">
-        <ng-container *ngFor="let digit of guess.digits; let idx = index">
-            <div *ngIf="idx === offerPriceCent.length - 2" class="block comma">.</div>
+            <mat-card-content>
+                <div *ngFor="let guess of guesses" class="guess">
+                    <ng-container *ngFor="let digit of guess.digits; let idx = index">
+                        <div *ngIf="idx === offerPriceCent.length - 2" class="block comma">.</div>
+            
+                        <div class="block digit digit-{{digit.status}}">
+                            {{ digit.digit }}
+                        </div>
+                    </ng-container>
+                </div>
+            </mat-card-content>
+        </mat-card>
 
-            <div class="block digit digit-{{digit.status}}">
-                {{ digit.digit }}
-            </div>
-        </ng-container>
-    </div>
+        <mat-card *ngIf="gameStatus === 'SUCCESS'" class="result-card">
+            <mat-card-title>Congratulations!</mat-card-title>
+            <mat-card-content>
+                You guessed the price in <strong>{{ currentGuessIdx }}</strong> tries!
+                For your great achievement you'll get {{ extraPoints }} extra loyalty points on your booking!
+            </mat-card-content>
+            <mat-card-actions>
+                <a mat-raised-button color="accent" (click)="share()">Share</a>
+                <a mat-raised-button color="primary" href="https://ibe-dev.seekda.com/ibe/{{ hotelId }}?skd-checkin={{ startDate }}&skd-checkout={{ endDate }}">Book your offer now!</a>
+            </mat-card-actions>
+        </mat-card>
 
-    <div *ngIf="gameStatus === 'SUCCESS'">
-        <div>
-            Congratulations! You guessed the price in <strong>{{ currentGuessIdx }}</strong> tries!
-        </div>
-        
-        <a href="https://ibe-dev.seekda.com/ibe/{{ hotelId }}?skd-checkin={{ startDate }}&skd-checkout={{ endDate }}">Book your offer now!</a>
-    </div>
-    <div *ngIf="gameStatus === 'FAILURE'">
-        <div>
-            Oh no, you failed to guess the correct price! Maybe you want to <a [routerLink]="[ '../../' ]">try one of our cheaper offers</a> with less digits to guess?
-        </div>
+        <mat-card *ngIf="gameStatus === 'FAILURE'" class="result-card">
+            <mat-card-title>Oh noes ...</mat-card-title>
+            <mat-card-content>
+                Sadly, you failed to guess the correct price! Maybe you want to try one of our cheaper offers with less digits to guess?
+            </mat-card-content>
+            <mat-card-actions>
+                <a mat-raised-button color="accent" (click)="share()">Share</a>
+                <a mat-raised-button color="primary" [routerLink]="[ '../../' ]">Go back</a>
+            </mat-card-actions>
+        </mat-card>
+
     </div>
 </div>

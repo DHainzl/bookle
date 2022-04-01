@@ -40,10 +40,11 @@ export class GuessService {
     }
 }
 
+export type GuessResultStatus = 'CORRECT' | 'OCCURENCE' | 'WRONG' | 'UNDEFINED';
 export interface GuessResult {
     finished: boolean;
     digits: {
-        status: 'CORRECT' | 'OCCURENCE' | 'WRONG' | 'UNDEFINED';
+        status: GuessResultStatus;
         digit: string;
     }[];
 }

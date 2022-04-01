@@ -1,14 +1,31 @@
-<div>
-    Travel Time: <input type="date" [(ngModel)]="startDate" /> - <input type="date" [(ngModel)]="endDate" />
-</div>
-<div>
-    <button (click)="search()">Get Offers</button>
-</div>
-<div *ngIf="errorMessage">{{ errorMessage }}</div>
-<div *ngFor="let result of searchResults">
-    <h2>{{ result.title }}</h2>
-    <div *ngFor="let offer of result.roomOffers">
-        <h3>{{ offer.rate?.title }}</h3>
-        <a [routerLink]="[ offer.room_code, offer.rate?.code ]" [queryParams]="{ startDate, endDate }">Book now!</a>
-    </div>
+<div class="container">
+    <mat-card>
+        <mat-card-title>
+            Find your perfect vacation!
+        </mat-card-title>
+        <mat-card-content>
+            <mat-form-field appearance="fill">
+                <mat-label>Travel Dates</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start Date" [(ngModel)]="startDate">
+                    <input matEndDate placeholder="End Date" [(ngModel)]="endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="accent" (click)="search()">Search</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+
+    <mat-card *ngFor="let result of searchResults" class="search-result">
+        <mat-card-title>{{ result.title }}</mat-card-title>
+        <mat-card-content *ngFor="let offer of result.roomOffers">
+            <a mat-raised-button color="primary" [routerLink]="[ offer.room_code, offer.rate?.code ]" [queryParams]="{ startDate: startDateString, endDate: endDateString }">{{ offer.rate?.title }}</a>
+        </mat-card-content>
+    </mat-card>
 </div>

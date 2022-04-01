@@ -8,8 +8,16 @@ import { OfferRateMetdata, OfferRoomMetadata, Offers, OffersService, RoomOffer }
 })
 export class HotelComponent implements OnInit {
     hotelId!: string;
-    startDate?: string = '2022-04-08';
-    endDate?: string = '2022-04-15';
+    startDate: Date = new Date('2022-04-08');
+    endDate: Date = new Date('2022-04-15');
+
+    get startDateString() {
+        return this.startDate.toISOString().substring(0, 10);
+    }
+    get endDateString() {
+        return this.endDate.toISOString().substring(0, 10);
+    }
+
     errorMessage: string = '';
     searchResults: (OfferRoomMetadata & { roomOffers: (RoomOffer & { rate: OfferRateMetdata | undefined; })[]; })[] = [];
 
@@ -38,7 +46,7 @@ export class HotelComponent implements OnInit {
             return;
         }
 
-        this.offersService.getOffers(this.hotelId, this.startDate, this.endDate, 2).subscribe(offers => {
+        this.offersService.getOffers(this.hotelId, this.startDateString, this.endDateString, 2).subscribe(offers => {
             this.searchResults = this.parseSearchResults(offers);
         });
     }
